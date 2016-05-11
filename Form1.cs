@@ -6,6 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Web;
+using System.Web.Script.Serialization;
+
 
 using SupervisorWebService.Five9SupervisorService;
 using SupervisorWebService.Five9AdminService;
@@ -31,52 +34,13 @@ namespace SupervisorWebService
         private long lastTimestamp = 0;
         private Dictionary<string, int> agentStateColumns = new Dictionary<string, int>();
         private Thread updateThread;
-
+        JavaScriptSerializer JVS = new JavaScriptSerializer();
         private void setSessionParameters_Click(object sender, EventArgs e)
         {
-            supervisorClient = new WsSupervisorClient();
-
-            // Add our AuthHeaderInserter behavior to the client endpoint
-            // this will invoke our behavior before every send so that
-            // we can insert the "Authorization" HTTP header before it is sent.
-            AuthHeaderInserter inserter = new AuthHeaderInserter();
-            inserter.Username = txtUsername.Text;
-            inserter.Password = txtPassword.Text;
-            supervisorClient.Endpoint.Behaviors.Add(new AuthHeaderBehavior(inserter));
-
-            setSessionParameters sessionParams = new setSessionParameters();
-            sessionParams.viewSettings = new viewSettings
-            {
-                forceLogoutSession = true,
-                rollingPeriodSpecified = true,
-                rollingPeriod = rollingPeriod.Hour1,
-                shiftStart = 8 * 60 * 60 * 1000, // 8AM in mS
-                statisticsRangeSpecified = true,
-                statisticsRange = statisticsRange.CurrentDay,
-                // use local time zone
-                timeZone = int.Parse(String.Format("{0:0}",
-                    TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now).TotalHours))
-            };
-
-            try
-            {
-                supervisorClient.setSessionParameters(sessionParams);
-
-                Log("Client state: " + supervisorClient.State);
-                this.setSessionParameters.Enabled = false;
-                this.getCallCounterStates.Enabled = true;
-                this.getColumnNames.Enabled = true;
-                this.closeSession.Enabled = true;
-            }
-            catch (MessageSecurityException mse)
-            {
-                Log("MessageSecurityException: " + mse.Message);
-            }
-            catch (FaultException ex)
-            {
-                Log("FaultException: Code: " + ex.Code + ", Reason: " + ex.Reason);
-            }
+            setSession("ali@sweetpixelstudios.com","aliraza1");
         }
+
+       
 
         private void getCallCounterStates_Click(object sender, EventArgs e)
         {
@@ -85,14 +49,18 @@ namespace SupervisorWebService
                 Five9SupervisorService.limitTimeoutState[] resp
                     = supervisorClient.getCallCountersState(
                     new Five9SupervisorService.getCallCountersState());
-
+                //Console.WriteLine(timeout);
                 Log("Call Counters:");
+                //string JsonData;
                 foreach (Five9SupervisorService.limitTimeoutState timeout in resp)
                 {
                     Log(" timeout: " + timeout.timeout);
+                    
                     foreach (Five9SupervisorService.callCounterState state in timeout.callCounterStates)
                     {
-                        Log("  " + state.operationType.ToString() + ": " + state.value + " / " + state.limit);
+                        Log("  " + JVS.Serialize(state.operationType) + ": " + JVS.Serialize(state.value) + " / " + JVS.Serialize(state.limit));
+                        
+                        
                     }
                 }
             }
@@ -118,7 +86,7 @@ namespace SupervisorWebService
                 Five9SupervisorService.getColumnNamesResponse resp 
                     = supervisorClient.getColumnNames(columnNames);
 
-                Log("getColumnNames type: " + columnNames.statisticType.ToString());
+                Log("getColumnNames type: " + JVS.Serialize(columnNames.statisticType));
                 agentStateColumns.Clear();
 
                 int i = 0;
@@ -315,7 +283,7 @@ namespace SupervisorWebService
                 {
                     instance.Invoke(c, new object[] { msg });
                 }
-                catch (Exception e) { }
+                catch (Exception ex) { }
             }
             else
             {
@@ -333,6 +301,52 @@ namespace SupervisorWebService
         {
             this.closeSession.PerformClick();
             this.closeSession2.PerformClick();
+        }
+
+        public void setSession(string name, string password)
+        {
+            supervisorClient = new WsSupervisorClient();
+
+            // Add our AuthHeaderInserter behavior to the client endpoint
+            // this will invoke our behavior before every send so that
+            // we can insert the "Authorization" HTTP header before it is sent.
+            AuthHeaderInserter inserter = new AuthHeaderInserter();
+            inserter.Username = name;
+            inserter.Password = password;
+            supervisorClient.Endpoint.Behaviors.Add(new AuthHeaderBehavior(inserter));
+
+            setSessionParameters sessionParams = new setSessionParameters();
+            sessionParams.viewSettings = new viewSettings
+            {
+                forceLogoutSession = true,
+                rollingPeriodSpecified = true,
+                rollingPeriod = rollingPeriod.Hour1,
+                shiftStart = 8 * 60 * 60 * 1000, // 8AM in mS
+                statisticsRangeSpecified = true,
+                statisticsRange = statisticsRange.CurrentDay,
+                // use local time zone
+                timeZone = int.Parse(String.Format("{0:0}",
+                    TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now).TotalHours))
+            };
+
+            try
+            {
+                supervisorClient.setSessionParameters(sessionParams);
+
+                Log("Client state: " + supervisorClient.State);
+                this.setSessionParameters.Enabled = false;
+                this.getCallCounterStates.Enabled = true;
+                this.getColumnNames.Enabled = true;
+                this.closeSession.Enabled = true;
+            }
+            catch (MessageSecurityException mse)
+            {
+                Log("MessageSecurityException: " + mse.Message);
+            }
+            catch (FaultException ex)
+            {
+                Log("FaultException: Code: " + ex.Code + ", Reason: " + ex.Reason);
+            }
         }
     }
 }

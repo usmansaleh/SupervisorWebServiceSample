@@ -39,12 +39,12 @@
             this.labelPassword = new System.Windows.Forms.Label();
             this.getUserInfo = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.getColumnNames = new System.Windows.Forms.Button();
+            this.getStatisticsUpdate = new System.Windows.Forms.Button();
+            this.getStatistics = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.closeSession2 = new System.Windows.Forms.Button();
             this.clear = new System.Windows.Forms.Button();
-            this.getStatistics = new System.Windows.Forms.Button();
-            this.getStatisticsUpdate = new System.Windows.Forms.Button();
-            this.getColumnNames = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -153,6 +153,39 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Supervisor Service";
             // 
+            // getColumnNames
+            // 
+            this.getColumnNames.Enabled = false;
+            this.getColumnNames.Location = new System.Drawing.Point(329, 19);
+            this.getColumnNames.Name = "getColumnNames";
+            this.getColumnNames.Size = new System.Drawing.Size(114, 23);
+            this.getColumnNames.TabIndex = 4;
+            this.getColumnNames.Text = "getColumnNames";
+            this.getColumnNames.UseVisualStyleBackColor = true;
+            this.getColumnNames.Click += new System.EventHandler(this.getColumnNames_Click);
+            // 
+            // getStatisticsUpdate
+            // 
+            this.getStatisticsUpdate.Enabled = false;
+            this.getStatisticsUpdate.Location = new System.Drawing.Point(181, 49);
+            this.getStatisticsUpdate.Name = "getStatisticsUpdate";
+            this.getStatisticsUpdate.Size = new System.Drawing.Size(124, 23);
+            this.getStatisticsUpdate.TabIndex = 6;
+            this.getStatisticsUpdate.Text = "getStatisticsUpdate";
+            this.getStatisticsUpdate.UseVisualStyleBackColor = true;
+            this.getStatisticsUpdate.Click += new System.EventHandler(this.getStatisticsUpdate_Click);
+            // 
+            // getStatistics
+            // 
+            this.getStatistics.Enabled = false;
+            this.getStatistics.Location = new System.Drawing.Point(16, 49);
+            this.getStatistics.Name = "getStatistics";
+            this.getStatistics.Size = new System.Drawing.Size(135, 23);
+            this.getStatistics.TabIndex = 5;
+            this.getStatistics.Text = "getStatistics";
+            this.getStatistics.UseVisualStyleBackColor = true;
+            this.getStatistics.Click += new System.EventHandler(this.getStatistics_Click);
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.closeSession2);
@@ -178,46 +211,13 @@
             // clear
             // 
             this.clear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.clear.Location = new System.Drawing.Point(562, 149);
+            this.clear.Location = new System.Drawing.Point(553, 149);
             this.clear.Name = "clear";
             this.clear.Size = new System.Drawing.Size(69, 23);
             this.clear.TabIndex = 11;
             this.clear.Text = "clear log";
             this.clear.UseVisualStyleBackColor = true;
             this.clear.Click += new System.EventHandler(this.clear_Click);
-            // 
-            // getStatistics
-            // 
-            this.getStatistics.Enabled = false;
-            this.getStatistics.Location = new System.Drawing.Point(16, 49);
-            this.getStatistics.Name = "getStatistics";
-            this.getStatistics.Size = new System.Drawing.Size(135, 23);
-            this.getStatistics.TabIndex = 5;
-            this.getStatistics.Text = "getStatistics";
-            this.getStatistics.UseVisualStyleBackColor = true;
-            this.getStatistics.Click += new System.EventHandler(this.getStatistics_Click);
-            // 
-            // getStatisticsUpdate
-            // 
-            this.getStatisticsUpdate.Enabled = false;
-            this.getStatisticsUpdate.Location = new System.Drawing.Point(181, 49);
-            this.getStatisticsUpdate.Name = "getStatisticsUpdate";
-            this.getStatisticsUpdate.Size = new System.Drawing.Size(124, 23);
-            this.getStatisticsUpdate.TabIndex = 6;
-            this.getStatisticsUpdate.Text = "getStatisticsUpdate";
-            this.getStatisticsUpdate.UseVisualStyleBackColor = true;
-            this.getStatisticsUpdate.Click += new System.EventHandler(this.getStatisticsUpdate_Click);
-            // 
-            // getColumnNames
-            // 
-            this.getColumnNames.Enabled = false;
-            this.getColumnNames.Location = new System.Drawing.Point(329, 19);
-            this.getColumnNames.Name = "getColumnNames";
-            this.getColumnNames.Size = new System.Drawing.Size(114, 23);
-            this.getColumnNames.TabIndex = 4;
-            this.getColumnNames.Text = "getColumnNames";
-            this.getColumnNames.UseVisualStyleBackColor = true;
-            this.getColumnNames.Click += new System.EventHandler(this.getColumnNames_Click);
             // 
             // pictureBox1
             // 
